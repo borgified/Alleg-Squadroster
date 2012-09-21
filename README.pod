@@ -8,22 +8,20 @@ Depends on the accessibility and availability of http://asgs.alleg.net/asgsweb/s
 
 =head2 SYNOPSIS
 
-use Alleg::Squadroster;
-
-my @squads = Squadroster::list_squads;
-
-print "squads: @squads\n";
-
-my $grey_sysx = Squadroster::list_grey("SysX");
-
-print "@$grey_sysx";
+  use Alleg::Squadroster;
+  
+  my @squads = Squadroster::list_squads;
+  print "squads: @squads\n";
+  
+  my $grey_sysx = Squadroster::list_grey("SysX");
+  print "@$grey_sysx";
 
 =head2 EXPORTED FUNCTIONS
 
-list_squads() - returns a list currently active squad's squad tag. (ie. RT, SysX)
+list_squads() - returns a @list currently active squad's squad tag. (ie. RT, SysX)
 
-list_red($squad_tag) - list all pilots in $squad_tag who have been inactive for >21 days
+list_red($squad_tag) - list all pilots in $squad_tag who have been inactive for >21 days in an $arrayref
 
-list_grey($squad_tag) - list all pilots in $squad_tag who have been inactive for >30 days
+list_grey($squad_tag) - list all pilots in $squad_tag who have been inactive for >30 days in an $arrayref
 
-list_leadership($squad_tag) - list all pilots in $squad_tag with a token (* or ^ or +)
+list_leadership($squad_tag) - list all pilots in $squad_tag with a token (* or ^ or +) in an $arrayref
