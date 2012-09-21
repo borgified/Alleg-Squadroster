@@ -1,13 +1,14 @@
-=head1 NAME Alleg::Squadroster
-=head2 SYNOPSIS
-Facilitates Squad Roster queries
+=head1 NAME
+
+Alleg::Squadroster - squad roster helper functions
 
 =head2 DEPENDENCIES
+
 Depends on the accessibility and availability of http://asgs.alleg.net/asgsweb/squads.aspx
 
 =head2 EXPORTED FUNCTIONS
 
-list_squads() - returns a list currently active squad's squad tag. 
+list_squads() - returns a list currently active squad's squad tag. (ie. RT, SysX)
 
 list_red($squad_tag) - list all pilots in $squad_tag who have been inactive for >21 days
 
