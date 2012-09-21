@@ -2,7 +2,7 @@
 
 use strict;
 use warnings;
-use Squadroster;
+use Alleg::Squadroster;
 
 my @squads=Squadroster::list_squads;
 
