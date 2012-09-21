@@ -6,6 +6,18 @@ Alleg::Squadroster - squad roster helper functions
 
 Depends on the accessibility and availability of http://asgs.alleg.net/asgsweb/squads.aspx
 
+=head2 SYNOPSIS
+
+use Alleg::Squadroster;
+
+my @squads = Squadroster::list_squads;
+
+print "squads: @squads\n";
+
+my $grey_sysx = Squadroster::list_grey("SysX");
+
+print "@$grey_sysx";
+
 =head2 EXPORTED FUNCTIONS
 
 list_squads() - returns a list currently active squad's squad tag. (ie. RT, SysX)
