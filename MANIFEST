@@ -2,3 +2,4 @@ MANIFEST
 Makefile.PL
 lib/Alleg/Squadroster.pm
 bin/test_sr.pl
+t/squadroster_webpage.t
