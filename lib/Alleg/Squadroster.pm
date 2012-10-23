@@ -15,7 +15,7 @@ my @EXPORT = qw(list_squads list_red list_grey list_leadership);
 
 my $DEBUG=0;
 
-my $roster_content = get 'http://asgs.alleg.net/asgsweb/squads.aspx';
+my $roster_content = get 'https://acss.alleg.net/Stats/SquadRoster.aspx';
 if(!defined($roster_content)){
 	die "couldnt fetch squad roster: $!";
 }
