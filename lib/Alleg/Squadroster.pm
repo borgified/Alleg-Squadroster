@@ -11,7 +11,7 @@ use vars qw($VERSION);
 $VERSION = '1.01';
 
 my @ISA = qw(Exporter);
-my @EXPORT = qw(list_squads list_red list_grey list_leadership);
+my @EXPORT = qw(list_squads list_inactive list_leadership);
 
 my $DEBUG=0;
 
@@ -50,6 +50,7 @@ my @valign = split(/<table>/,"@aspnet");
 shift @valign;
 
 my $count=0;
+
 foreach my $item (@valign){
 	#print "$item\n";
 	my @list=split(/\n/,$item);
@@ -77,18 +78,35 @@ foreach my $item (@valign){
 				if($token eq '&nbsp;'){
 					$token = 'p';
 				}
-				print "$squads[$count] $token $callsign $status\n";
+				#print "$squads[$count] $token $callsign $status\n";
 
-				if(!exists($data{"$squads[$count]"}{'roster'}){
+				if(!exists($data{"$squads[$count]"}{'roster'})){
 					my @roster;
 					push(@roster,$callsign);
 					$data{"$squads[$count]"}{'roster'}=\@roster;
 				}else{
-					
-					
+					push($data{"$squads[$count]"}{'roster'}, $callsign);
+				}
 
-
-
+				if($token ne 'p'){
+					if(!exists($data{"$squads[$count]"}{'leadership'})){
+						my @leadership;
+						push(@leadership,$callsign);
+						$data{"$squads[$count]"}{'leadership'}=\@leadership;
+					}else{
+						push($data{"$squads[$count]"}{'leadership'}, $callsign);
+					}   
+				}
+				
+				if($status eq 'inactive'){
+					if(!exists($data{"$squads[$count]"}{'inactive'})){
+						my @inactive;
+						push(@inactive,$callsign);
+						$data{"$squads[$count]"}{'inactive'}=\@inactive;
+					}else{                                                      
+						push($data{"$squads[$count]"}{'inactive'}, $callsign);
+					}                                                                   
+				}              
 
 				$helper=0;
 		}
@@ -96,79 +114,23 @@ foreach my $item (@valign){
 	$count++;
 }
 
+#for debugging
+
+#foreach my $squads (keys %data){
+#	print "roster: @{$data{$squads}{'roster'}}\n";
+#	print "leadership: @{$data{$squads}{'leadership'}}\n";
+#	print "inactive: @{$data{$squads}{'inactive'}}\n";
+#}
 
 
-__END__
-
-#gotta remove all <b> </b> because when it shows up, it doesnt leave a space behind the
-#callsign which i use for pattern matching
-	$squad =~ s/<b>//gi;
-	$squad =~ s/<\/b>//gi;
-
-	$squad=~/^(.*?)&nbsp;.*\(\@(.*?)\)/;
-
-	my $squad_name=$1;
-	my $squad_tag=$2;
-	$DEBUG && print "--------------------------\n";
-	$DEBUG && print $squad_name," ",$squad_tag,"\n";
-
-
-#identify squad leadership
-	my @squad_leadership;
-	my @pilots=split(/<br>/i,$squad);
-	foreach my $pilot (@pilots){
-		if($pilot =~ /[\*\+\^](.*?) /){
-			push(@squad_leadership,$1);
-		}
-	}
-	$DEBUG && print "squad leadership: @squad_leadership\n";
-
-#inactives (>30 days)
-	my @inactives = split(/<strike>/,$squad);
-	my @grey;
-
-	foreach my $inactive (@inactives){
-		if($inactive =~/[\*\+\^]?(.*)\s<\/strike> /){
-			#print "grey: $1\n";
-			push(@grey,$1);
-		}
-	}
-	$DEBUG && print "grey: @grey\n";
-#reds (>21 days)
-	my @red; #sorry for the confusing naming convention...
-	my @reds = split(/<font color="red">/,$squad);
-	shift(@reds);
-	foreach my $red (@reds){
-		if($red =~/[\*\+\^]?(.*?)\s<\/strike><\/font>/){
-			#print "red: $1\n";
-			push(@red,$1);
-		}
-	}
-	$DEBUG && print "red: @red\n";
-
-
-	$data{$squad_tag}{'leadership'}=\@squad_leadership;
-	$data{$squad_tag}{'red'}=\@red;
-	$data{$squad_tag}{'grey'}=\@grey;
-
-}
-
-sub list_squads{
-	return keys(%data);
-}
-
-sub list_red{
+sub list_inactive{
 	my $squad_tag=shift @_;
-	return ($data{$squad_tag}{'red'});
+	return ($data{$squad_tag}{'inactive'});
 }
-sub list_grey{
-	my $squad_tag=shift @_;
-	return ($data{$squad_tag}{'grey'});
-}
+
 sub list_leadership{
 	my $squad_tag=shift @_;
 	return ($data{$squad_tag}{'leadership'});
 }
-
 
 1;

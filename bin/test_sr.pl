@@ -9,6 +9,5 @@ my @squads=Squadroster::list_squads;
 
 print "squads: @squads\n";
 
-my $grey_sysx = Squadroster::list_grey("SysX");
-
-print "@$grey_sysx";
+my $inactives = Squadroster::list_inactive("System X");
+print "@$inactives";
