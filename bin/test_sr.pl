@@ -10,4 +10,9 @@ my @squads=Squadroster::list_squads;
 print "squads: @squads\n";
 
 my $inactives = Squadroster::list_inactive("System X");
-print "@$inactives";
+print "inactive pilots in System X:\n";
+print "@$inactives\n";
+
+my $leadership = Squadroster::list_leadership("Allegiance Flight School");
+print "leadership of Allegiance Flight School: \n";
+print "@$leadership\n";
