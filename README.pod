@@ -24,8 +24,8 @@ Depends on the accessibility and availability of https://acss.alleg.net/Stats/Sq
 
 =head2 EXPORTED FUNCTIONS
 
-	list_squads() - returns a @list currently active squads.
+  list_squads() - returns a @list currently active squads.
 
-	list_inactive($squad) - list all inactive pilots in $squad
+  list_inactive($squad) - list all inactive pilots in $squad
 
-	list_leadership($squad) - list all pilots in $squad with a token (* or ^ or +) in an $arrayref
+  list_leadership($squad) - list all pilots in $squad with a token (* or ^ or +) in an $arrayref
