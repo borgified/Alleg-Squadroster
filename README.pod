@@ -3,7 +3,9 @@
 Alleg::Squadroster - squad roster helper functions
 
 =head2 VERSION
+
 1.01 - updated for ACSS
+0.01 - initial version (ASGS)
 
 =head2 DEPENDENCIES
 
