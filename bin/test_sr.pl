@@ -3,20 +3,23 @@
 use strict;
 use warnings;
 use lib "../lib";
-use Alleg::Squadroster;
+use Alleg::Squadroster 1.02;
 
-my @squads=Squadroster::list_squads;
+
+print "module version: $Alleg::Squadroster::VERSION\n";
+
+my @squads=Alleg::Squadroster::list_squads;
 
 print "squads: @squads\n";
 
-my $inactives = Squadroster::list_inactive("System X");
+my $inactives = Alleg::Squadroster::list_inactive("System X");
 print "inactive pilots in System X:\n";
 print "@$inactives\n";
 
-my $actives = Squadroster::list_active("System X");
+my $actives = Alleg::Squadroster::list_active("System X");
 print "active pilots in System X:\n";
 print "@$actives\n";
 
-my $leadership = Squadroster::list_leadership("Allegiance Flight School");
+my $leadership = Alleg::Squadroster::list_leadership("Allegiance Flight School");
 print "leadership of Allegiance Flight School: \n";
 print "@$leadership\n";

@@ -1,4 +1,4 @@
-package Squadroster;
+package Alleg::Squadroster;
 
 require Exporter;
 use warnings;
@@ -6,9 +6,7 @@ use strict;
 
 use LWP::Simple;
 
-use vars qw($VERSION);
-
-$VERSION = '1.02';
+our $VERSION = '1.02';
 
 my @ISA = qw(Exporter);
 my @EXPORT = qw(list_squads list_inactive list_leadership list_active);
