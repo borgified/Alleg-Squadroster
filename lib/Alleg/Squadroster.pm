@@ -8,7 +8,7 @@ use LWP::Simple;
 
 use vars qw($VERSION);
 
-$VERSION = '1.01';
+$VERSION = '1.02';
 
 my @ISA = qw(Exporter);
 my @EXPORT = qw(list_squads list_inactive list_leadership list_active);
