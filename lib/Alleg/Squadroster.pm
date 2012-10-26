@@ -11,7 +11,7 @@ use vars qw($VERSION);
 $VERSION = '1.01';
 
 my @ISA = qw(Exporter);
-my @EXPORT = qw(list_squads list_inactive list_leadership);
+my @EXPORT = qw(list_squads list_inactive list_leadership list_active);
 
 my $DEBUG=0;
 
@@ -106,7 +106,15 @@ foreach my $item (@valign){
 					}else{                                                      
 						push($data{"$squads[$count]"}{'inactive'}, $callsign);
 					}                                                                   
-				}              
+				}else{
+					if(!exists($data{"$squads[$count]"}{'active'})){
+						my @active;
+						push(@active,$callsign);
+						$data{"$squads[$count]"}{'active'}=\@active;
+					}else{    
+						push($data{"$squads[$count]"}{'active'}, $callsign);
+					}    
+				}
 
 				$helper=0;
 		}
@@ -126,6 +134,11 @@ foreach my $item (@valign){
 sub list_inactive{
 	my $squad_tag=shift @_;
 	return ($data{$squad_tag}{'inactive'});
+}
+
+sub list_active{
+	my $squad_tag=shift @_;
+	return ($data{$squad_tag}{'active'});
 }
 
 sub list_leadership{
