@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 use lib "../lib";
-use Alleg::Squadroster 1.02;
+use Alleg::Squadroster 1.03;
 
 
 print "module version: $Alleg::Squadroster::VERSION\n";
@@ -23,3 +23,10 @@ print "@$actives\n";
 my $leadership = Alleg::Squadroster::list_leadership("Allegiance Flight School");
 print "leadership of Allegiance Flight School: \n";
 print "@$leadership\n";
+
+print "---------------------------------\n";
+print "list unlisted in System X:\n";
+my $unlisted = Alleg::Squadroster::list_unlisted("System X");
+print "@$unlisted\n";
+
+

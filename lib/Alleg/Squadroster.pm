@@ -6,24 +6,27 @@ use strict;
 
 use LWP::Simple;
 
-our $VERSION = '1.02';
+use Net::Google::Spreadsheets;
+
+our $VERSION = '1.03';
 
 my @ISA = qw(Exporter);
-my @EXPORT = qw(list_squads list_inactive list_leadership list_active);
+my @EXPORT = qw(list_squads list_inactive list_leadership list_active list_unlisted);
 
 my $DEBUG=0;
+
+my %config = do '/secret/google.config';
 
 my $roster_content = get 'http://acss.alleg.net/Stats/SquadRoster.aspx';
 if(!defined($roster_content)){
 	die "couldnt fetch squad roster: $!";
 }
 
-my $token='<thead>';
-
 my %data;
 
 sub list_squads {
 #returns all squads in a list in order of appearance (left->right)
+	my $token='<thead>';
 	my @squads = split(/$token/,$roster_content);
 	my @results;
 
@@ -55,6 +58,7 @@ foreach my $item (@valign){
 	my($token,$callsign,$status);
 
 	my $helper=0;
+	my $once=1;
 
 	foreach my $item (@list){
 #		print "-------------------------\n";
@@ -110,13 +114,23 @@ foreach my $item (@valign){
 						push(@active,$callsign);
 						$data{"$squads[$count]"}{'active'}=\@active;
 					}else{    
-						push($data{"$squads[$count]"}{'active'}, $callsign);
+					    push($data{"$squads[$count]"}{'active'}, $callsign);
 					}    
 				}
-
+				
+				if($once && defined($config{$squads[$count]})){
+				    $data{"$squads[$count]"}{'unlisted'}=&get_unlisted("$squads[$count]");
+				}elsif(!$once && defined($config{$squads[$count]})){
+						#do nothing, we already did it once
+				}else{
+				    $data{"$squads[$count]"}{'unlisted'}=[];
+				}
+				$once=0;
 				$helper=0;
 		}
 	}
+
+	$once=1;
 	$count++;
 }
 
@@ -127,6 +141,44 @@ foreach my $item (@valign){
 #	print "leadership: @{$data{$squads}{'leadership'}}\n";
 #	print "inactive: @{$data{$squads}{'inactive'}}\n";
 #}
+
+#unlisted pilots come from another source: google docs, they may or may not
+#have a callsign, all we know about them is that they have a forum name
+
+sub get_unlisted{
+	my $squad = shift @_;
+
+	my $key = $config{$squad};
+
+	my $service = Net::Google::Spreadsheets->new(
+			username => $config{'username'},
+			password => $config{'password'},
+			);
+
+# find a spreadsheet by key
+	my $spreadsheet = $service->spreadsheet(
+			{
+			key => $key,
+			}
+			);
+
+# find a worksheet by title
+	my $worksheet = $spreadsheet->worksheet(
+			{
+			title => 'Sheet1'
+			}
+			);
+
+	my @rows = $worksheet->rows;
+
+	my @unlisted;
+
+	foreach my $row (@rows){
+		push(@unlisted,${$row->content}{'forumname'});
+	}
+	return \@unlisted;
+}
+
 
 
 sub list_inactive{
@@ -144,4 +196,8 @@ sub list_leadership{
 	return ($data{$squad_tag}{'leadership'});
 }
 
+sub list_unlisted{
+	my $squad_tag=shift @_;
+	return ($data{$squad_tag}{'unlisted'});
+}
 1;
