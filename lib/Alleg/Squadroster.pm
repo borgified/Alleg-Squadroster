@@ -8,7 +8,7 @@ use LWP::Simple;
 
 use Net::Google::Spreadsheets;
 
-our $VERSION = '1.03';
+our $VERSION = '1.04';
 
 my @ISA = qw(Exporter);
 my @EXPORT = qw(list_squads list_inactive list_leadership list_active list_unlisted);
@@ -180,6 +180,38 @@ sub get_unlisted{
 }
 
 
+sub get_exsquadded{
+
+	my $key = $config{'exsquadded'};
+
+	my $service = Net::Google::Spreadsheets->new(
+			username => $config{'username'},
+			password => $config{'password'},
+			);
+
+# find a spreadsheet by key
+	my $spreadsheet = $service->spreadsheet(
+			{
+			key => $key,
+			}
+			);
+
+# find a worksheet by title
+	my $worksheet = $spreadsheet->worksheet(
+			{
+			title => 'Sheet1'
+			}
+			);
+
+	my @rows = $worksheet->rows;
+
+	my @exsquadded;
+
+	foreach my $row (@rows){
+		push(@exsquadded,${$row->content}{'forumname'});
+	}
+	return \@exsquadded;
+}
 
 sub list_inactive{
 	my $squad_tag=shift @_;
@@ -200,4 +232,10 @@ sub list_unlisted{
 	my $squad_tag=shift @_;
 	return ($data{$squad_tag}{'unlisted'});
 }
+
+sub list_exsquadded{
+	my $a=&get_exsquadded;
+	return $a;
+}
+
 1;

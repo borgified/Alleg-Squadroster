@@ -30,3 +30,8 @@ my $unlisted = Alleg::Squadroster::list_unlisted("System X");
 print "@$unlisted\n";
 
 
+print "---------------------------------\n";
+
+print "list exsquadded:\n";
+my $exsquadded = Alleg::Squadroster::list_exsquadded;
+print "@$exsquadded\n";
