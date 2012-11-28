@@ -12,21 +12,21 @@ my @squads=Alleg::Squadroster::list_squads;
 
 print "squads: @squads\n";
 
-my $inactives = Alleg::Squadroster::list_inactive("System X");
+my $inactives = Alleg::Squadroster::list_inactive("SystemX");
 print "inactive pilots in System X:\n";
 print "@$inactives\n";
 
-my $actives = Alleg::Squadroster::list_active("System X");
+my $actives = Alleg::Squadroster::list_active("SystemX");
 print "active pilots in System X:\n";
 print "@$actives\n";
 
-my $leadership = Alleg::Squadroster::list_leadership("Allegiance Flight School");
+my $leadership = Alleg::Squadroster::list_leadership("AllegianceFlightSchool");
 print "leadership of Allegiance Flight School: \n";
 print "@$leadership\n";
 
 print "---------------------------------\n";
 print "list unlisted in System X:\n";
-my $unlisted = Alleg::Squadroster::list_unlisted("System X");
+my $unlisted = Alleg::Squadroster::list_unlisted("SystemX");
 print "@$unlisted\n";
 
 
