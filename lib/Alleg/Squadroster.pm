@@ -8,7 +8,7 @@ use LWP::Simple;
 
 use Net::Google::Spreadsheets;
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 my @ISA = qw(Exporter);
 my @EXPORT = qw(list_squads list_inactive list_leadership list_active list_unlisted);
@@ -36,7 +36,9 @@ sub list_squads {
 
 	foreach my $squad (@squads){
 		if($squad =~ /<th class="centerHeaders">(.*)<\/th>/){
-			push(@results,$1);
+			my $stuff=$1;
+			$stuff=~s/[^a-zA-Z]//g;
+			push(@results,$stuff);
 		}
 	}
 
